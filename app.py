@@ -1,10 +1,32 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 
-app = Flask(_name_)
+app = Flask(__name__)
 
-@app.route('/')
-def home():
-    return "Hello, CI/CD!"
+@app.route('/add', methods=['POST'])
+def add():
+    data = request.get_json()
+    result = data['a'] + data['b']
+    return jsonify({'result': result})
 
-if _name_ == '_main_':
-    app.run()
+@app.route('/subtract', methods=['POST'])
+def subtract():
+    data = request.get_json()
+    result = data['a'] - data['b']
+    return jsonify({'result': result})
+
+@app.route('/multiply', methods=['POST'])
+def multiply():
+    data = request.get_json()
+    result = data['a'] * data['b']
+    return jsonify({'result': result})
+
+@app.route('/divide', methods=['POST'])
+def divide():
+    data = request.get_json()
+    if data['b'] == 0:
+        return jsonify({'error': 'Division by zero'}), 400
+    result = data['a'] / data['b']
+    return jsonify({'result': result})
+
+if __name__ == '__main__':
+    app.run(debug=True)
